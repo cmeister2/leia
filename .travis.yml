@@ -1,0 +1,18 @@
+language: python
+python:
+- 3.6
+- 3.5
+- 3.4
+- 2.7
+install: pip install -U tox-travis
+script: tox
+deploy:
+  provider: pypi
+  distributions: sdist bdist_wheel
+  user: cmeister2
+  password:
+    secure: syyS+Z5d+fWuXP44PdRvt41A0/xUYOkXdRjNUb2ieiIXn8eBpj+HP6ROmUiUR7RgE6NF0fitgx1nguvvDnwRWM9zdwT2joSRxcbIkEWFphDNquHRNzx4o2lv38KwZ6TFafp3PYHb8yOZLy2ePPWrs4wxBlzVtJTApPTsJDs6uzVM9opBWFi+Uc8qbMxig/tcQ44GRbmZS6fpv1upbDptle7N0z82rnDwTACkSIxMzvRtE09Ds9VbU2P6PNg4hHqkjYJGdkqd4Lf3TsFculZVYE1dJbcCS76hmdFL4xrzMSqChaZ3SzJr+SN3B3Nar0bZL7e7r9b2sOQ8vaLrz0PXuMHUNZEQtn6UaiQkljmyVKcIU30bn8mPE1y1r/WYbgeI3wBihoEi88/T+MrGOOR/vBrcMYNkjGOjXqaT2onetNt2nsRRqWOt3OJ/f5HoU4W57qzELqNp9o8yV2LQztsgs6ABABlBZWqeBe9R9pX+jJ0MKhg3pczUTvcAK+VRfug9RGMuFrsDOrHSzS2o+htgJbW6GLNApmoOScVcmAHCURkI0VZGskwo3I1jaYW6MmpsLj/dbQhQhtyrv6Ju5nxvDKwaBslbgeNXlFJHT7g49lxdzQ1tGjx/ke37h+r4QVNjzJHyIt5rA0CtzqR3u0Lw4nH6o3AdGYLR6vysI+3tZK4=
+  on:
+    tags: true
+    repo: cmeister2/leia
+    python: 3.6
