@@ -9,5 +9,5 @@ m2r==0.2.1
 twine==1.12.1
 -r requirements_flake8.txt
 
-pytest==3.8.2
+pytest==9.0.3
 pytest-runner==4.2
