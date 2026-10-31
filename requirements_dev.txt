@@ -1,13 +1,13 @@
-pip==26.2
-bumpversion==0.5.3
-wheel==0.38.1
-watchdog==0.9.0
-tox==3.5.2
-coverage==4.5.1
-Sphinx==1.8.1
-m2r==0.2.1
-twine==1.12.1
+pip==26.2.2
+bumpversion==0.6.0
+wheel==0.48.0
+watchdog==0.10.7
+tox==3.28.0
+coverage==4.5.4
+Sphinx==1.8.6
+m2r==0.3.1
+twine==1.15.0
 -r requirements_flake8.txt
 
-pytest==9.0.3
-pytest-runner==4.2
+pytest==9.2.0
+pytest-runner==4.5.1
