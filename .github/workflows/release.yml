@@ -30,16 +30,7 @@ jobs:
       - name: Check release tag matches the package version
         env:
           RELEASE_TAG: ${{ github.ref_name }}
-        run: |
-          uv run --locked python - <<'PY'
-          import os
-          from importlib.metadata import version
-
-          expected = f"v{version('leia')}"
-          actual = os.environ["RELEASE_TAG"]
-          if actual != expected:
-              raise SystemExit(f"Release tag {actual!r} must match {expected!r}")
-          PY
+        run: uv run --locked python scripts/check_release_tag.py
       - run: uv build
       - name: Upload distributions
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1

@@ -43,20 +43,12 @@ jobs:
       - run: uv sync --locked --all-groups
       - run: uv run --locked ruff check .
       - name: Build documentation
-        run: |
-          uv run --locked --group docs sphinx-apidoc -o docs/ leia/
-          uv run --locked --group docs sphinx-build -W --keep-going -b html docs/ docs/_build/html/
+        run: make docs
       - run: uv build
       - name: Test installed wheel outside the checkout
-        working-directory: ${{ runner.temp }}
-        run: >-
-          uv run --isolated --no-project --with "$GITHUB_WORKSPACE"/dist/*.whl
-          --with pytest pytest --import-mode=importlib "$GITHUB_WORKSPACE/tests"
+        run: uv run --locked python scripts/test_distribution.py wheel
       - name: Test installed source distribution outside the checkout
-        working-directory: ${{ runner.temp }}
-        run: >-
-          uv run --isolated --no-project --with "$GITHUB_WORKSPACE"/dist/*.tar.gz
-          --with pytest pytest --import-mode=importlib "$GITHUB_WORKSPACE/tests"
+        run: uv run --locked python scripts/test_distribution.py sdist
 
   success:
     name: Success
@@ -64,8 +56,11 @@ jobs:
     if: ${{ always() }}
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
       - name: Require all checks to pass
         env:
           TESTS_RESULT: ${{ needs.tests.result }}
           CHECKS_RESULT: ${{ needs.checks.result }}
-        run: test "$TESTS_RESULT" = success && test "$CHECKS_RESULT" = success
+        run: python scripts/check_ci_results.py
