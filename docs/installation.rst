@@ -5,47 +5,56 @@ Installation
 ============
 
 
-Stable release
---------------
+In another project
+------------------
 
-To install leia, run this command in your terminal:
+leia requires Python 3.11 or later. With `uv`_ installed, add leia to an existing
+Python project:
 
 .. code-block:: console
 
-    $ pip install leia
+    $ uv add leia
 
-This is the preferred method to install leia, as it will always install the most recent stable release.
+You can also install leia into an existing environment with pip:
 
-If you don't have `pip`_ installed, this `Python installation guide`_ can guide
-you through the process.
+.. code-block:: console
 
-.. _pip: https://pip.pypa.io
-.. _Python installation guide: http://docs.python-guide.org/en/latest/starting/installation/
+    $ python -m pip install leia
+
+.. _uv: https://docs.astral.sh/uv/getting-started/installation/
 
 
 From sources
 ------------
 
-The sources for leia can be downloaded from the `Github repo`_.
+The sources for leia can be downloaded from the `GitHub repository`_.
 
 You can either clone the public repository:
 
 .. code-block:: console
 
-    $ git clone git://github.com/cmeister2/leia
+    $ git clone https://github.com/cmeister2/leia.git
+    $ cd leia
+    $ git switch main
+    $ uv sync
 
-Or download the `tarball`_:
-
-.. code-block:: console
-
-    $ curl  -OL https://github.com/cmeister2/leia/tarball/master
-
-Once you have a copy of the source, you can install it with:
+This creates ``.venv`` and installs leia in editable mode with its development
+dependencies. Run the tests with:
 
 .. code-block:: console
 
-    $ python setup.py install
+    $ uv run pytest
 
+You can also download the ``main`` branch as a `tarball`_. Extract it, enter the
+source directory, and run ``uv sync``.
 
-.. _Github repo: https://github.com/cmeister2/leia
-.. _tarball: https://github.com/cmeister2/leia/tarball/master
+To build a source distribution and wheel:
+
+.. code-block:: console
+
+    $ uv build
+
+The distributions are written to ``dist/``.
+
+.. _GitHub repository: https://github.com/cmeister2/leia
+.. _tarball: https://github.com/cmeister2/leia/archive/refs/heads/main.tar.gz
