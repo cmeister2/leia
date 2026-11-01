@@ -6,7 +6,7 @@ tox==3.5.2
 coverage==4.5.1
 Sphinx==1.8.1
 m2r==0.2.1
-twine==1.12.1
+twine==7.0.0
 -r requirements_flake8.txt
 
 pytest==9.0.3
