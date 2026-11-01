@@ -1,25 +1,24 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
+"""Smoke tests for the installed leia package."""
 
-"""Tests for `leia` package."""
+from importlib.metadata import metadata, version
 
-import pytest
-
-
-from leia import leia
+import leia
+from leia import leia as module
 
 
-@pytest.fixture
-def response():
-    """Sample pytest fixture.
-
-    See more at: http://doc.pytest.org/en/latest/fixture.html
-    """
-    # import requests
-    # return requests.get('https://github.com/audreyr/cookiecutter-pypackage')
+def test_version():
+    """Keep the installed distribution version consistent with the package."""
+    assert version("leia") == leia.__version__
 
 
-def test_content(response):
-    """Sample pytest test function with the pytest fixture as an argument."""
-    # from bs4 import BeautifulSoup
-    # assert 'GitHub' in BeautifulSoup(response.content).title.string
+def test_module():
+    """Include the existing leia.leia module in installed distributions."""
+    assert module.__name__ == "leia.leia"
+
+
+def test_metadata():
+    """Preserve the package identity and declare the supported Python version."""
+    package_metadata = metadata("leia")
+    assert package_metadata["Name"] == "leia"
+    assert package_metadata["Requires-Python"] == ">=3.11"
+    assert package_metadata["License-Expression"] == "MIT"

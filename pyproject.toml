@@ -1,0 +1,66 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "leia"
+dynamic = ["version", "readme"]
+description = "leia is a layering and compositing library for Python and PIL images."
+requires-python = ">=3.11"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{ name = "Max Dymond", email = "cmeister2@gmail.com" }]
+keywords = ["leia"]
+classifiers = [
+    "Development Status :: 2 - Pre-Alpha",
+    "Intended Audience :: Developers",
+    "Natural Language :: English",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Programming Language :: Python :: 3.15",
+]
+dependencies = []
+
+[project.urls]
+Homepage = "https://github.com/cmeister2/leia"
+Documentation = "https://leia.readthedocs.io"
+Issues = "https://github.com/cmeister2/leia/issues"
+
+[dependency-groups]
+dev = [
+    "coverage>=7",
+    "pytest>=9",
+    "ruff>=0.14",
+]
+docs = [
+    "myst-parser>=4",
+    "sphinx>=8",
+    "watchdog>=6",
+]
+
+[tool.setuptools]
+packages = ["leia"]
+
+[tool.setuptools.dynamic]
+version = { attr = "leia.__version__" }
+readme = { file = ["README.md", "CHANGELOG.md"], content-type = "text/markdown" }
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "--import-mode=importlib"
+
+[tool.coverage.run]
+source = ["leia"]
+
+[tool.ruff]
+extend-exclude = ["docs"]
+
+[tool.ruff.lint]
+select = ["E4", "E7", "E9", "F", "I", "D"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "pep257"

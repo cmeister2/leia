@@ -1,0 +1,71 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_call:
+
+permissions:
+  contents: read
+
+jobs:
+  tests:
+    name: Python ${{ matrix.python-version }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11", "3.12", "3.13", "3.14", "3.15"]
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: astral-sh/setup-uv@c771a70e6277c0a99b617c7a806ffedaca235ff9 # v9.0.0
+        with:
+          version: "0.13.6"
+          python-version: ${{ matrix.python-version }}
+          enable-cache: true
+      - run: uv sync --locked
+      - run: uv run --locked pytest
+
+  checks:
+    name: Lint, documentation, and distributions
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: astral-sh/setup-uv@c771a70e6277c0a99b617c7a806ffedaca235ff9 # v9.0.0
+        with:
+          version: "0.13.6"
+          enable-cache: true
+      - run: uv sync --locked --all-groups
+      - run: uv run --locked ruff check .
+      - name: Build documentation
+        run: |
+          uv run --locked --group docs sphinx-apidoc -o docs/ leia/
+          uv run --locked --group docs sphinx-build -W --keep-going -b html docs/ docs/_build/html/
+      - run: uv build
+      - name: Test installed wheel outside the checkout
+        working-directory: ${{ runner.temp }}
+        run: >-
+          uv run --isolated --no-project --with "$GITHUB_WORKSPACE"/dist/*.whl
+          --with pytest pytest --import-mode=importlib "$GITHUB_WORKSPACE/tests"
+      - name: Test installed source distribution outside the checkout
+        working-directory: ${{ runner.temp }}
+        run: >-
+          uv run --isolated --no-project --with "$GITHUB_WORKSPACE"/dist/*.tar.gz
+          --with pytest pytest --import-mode=importlib "$GITHUB_WORKSPACE/tests"
+
+  success:
+    name: Success
+    needs: [tests, checks]
+    if: ${{ always() }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Require all checks to pass
+        env:
+          TESTS_RESULT: ${{ needs.tests.result }}
+          CHECKS_RESULT: ${{ needs.checks.result }}
+        run: test "$TESTS_RESULT" = success && test "$CHECKS_RESULT" = success

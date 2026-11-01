@@ -3,9 +3,11 @@ include CHANGELOG.md
 include CONTRIBUTING.md
 include LICENSE
 include README.md
+include Makefile
+include uv.lock
+include .python-version
 
-recursive-include tests *
-recursive-exclude * __pycache__
-recursive-exclude * *.py[co]
+recursive-include tests *.py
 
-recursive-include docs *.rst conf.py Makefile make.bat *.jpg *.png *.gif
+recursive-include docs *.rst conf.py Makefile make.bat
+prune docs/_build

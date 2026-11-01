@@ -71,9 +71,6 @@ target/
 # Jupyter Notebook
 .ipynb_checkpoints
 
-# pyenv
-.python-version
-
 # celery beat schedule file
 celerybeat-schedule
 
@@ -100,6 +97,13 @@ ENV/
 
 # mypy
 .mypy_cache/
+
+# Ruff
+.ruff_cache/
+
+# Generated API documentation
+docs/leia.rst
+docs/modules.rst
 
 # Pycharm
 .idea/
